@@ -1,0 +1,78 @@
+.sf-button {
+    width: 8.5rem;
+    height: 2.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+ 
+    vertical-align: bottom;
+    overflow: hidden;
+    font-weight: 700;
+    border-radius: 6px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14),
+        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+
+}
+
+.sf-btn-success {
+    border: 1px solid #10b981;
+    color: #ffffff;
+    background: #22C55E;
+    border: 1px solid #22C55E;
+
+    &:hover {
+        background: #16A34A;
+        color: #ffffff;
+        border-color: #16A34A;
+        border: 1px solid #22C55E
+    }
+
+    &:active {
+        background: #15803D;
+        color: #ffffff;
+        border-color: #15803D;
+        border: 1px solid #22C55E
+    }
+}
+
+.sf-btn-danger {
+    color: #ffffff;
+    background: #EF4444;
+    border: 1px solid #EF4444;
+
+    &:hover {
+        background: #DC2626;
+        color: #ffffff;
+        border-color: #DC2626;
+    }
+
+    &:active {
+        background: #B91C1C;
+        color: #ffffff;
+        border-color: #B91C1C;
+    }
+}
+
+.sf-btn-submit {
+    color: #ffffff;
+    background: #3B82F6;
+    border: 1px solid #3B82F6;
+
+    &:hover {
+        background: #2563EB;
+        color: #ffffff;
+        border-color: #2563EB;
+    }
+
+    &:active {
+        background: #1D4ED8;
+        color: #ffffff;
+        border-color: #1D4ED8;
+    }
+}
