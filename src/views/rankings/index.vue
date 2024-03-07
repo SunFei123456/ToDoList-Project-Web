@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="right">
-                            {{ item.completeNum }}
+                            {{ item.completeNum }} 个
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,31 @@
                             </div>
                         </div>
                         <div class="right">
-                            {{ item.no_completeNum }}
+                            {{ item.no_completeNum }} 个
+                        </div>
+                    </div>
+                </div>
+            </a-tab-pane>
+            <a-tab-pane key="4">
+                <template #tab>
+                    <span>
+                        <android-outlined />
+                        累计签到天数排行榜
+                    </span>
+                </template>
+                <div id="leaderboard">
+                    <div class="user" v-for="(item, index) in RankingsDataOftotal_signDays" :key="index">
+                        <span class="left"># {{ index + 1 }}</span>
+                        <div class="middle">
+                            <img :src="item.avatar_url" alt="UserAvatar">
+                            <div class="userInfo">
+                                <span class="username">{{ item.username }}</span>
+                                <span class="Signatures">
+                                    {{ item.introduce }} </span>
+                            </div>
+                        </div>
+                        <div class="right">
+                            {{ item.total_sign_days }} 天
                         </div>
                     </div>
                 </div>
@@ -88,13 +112,14 @@
 import { AppleOutlined, AndroidOutlined } from '@ant-design/icons-vue';
 import { ref, onMounted } from 'vue';
 import { TabsProps } from 'ant-design-vue/es/tabs';
-import { getRankings, getRankingsByCompleteNum,getRankingsByNoCompleteNum } from '@/apis/rankings';
+import { getRankings, getRankingsByCompleteNum, getRankingsByNoCompleteNum, getRankingsBySignDays } from '@/apis/rankings';
 import { sunfeiMessage } from '@/utils';
 const tabPosition = ref<TabsProps['tabPosition']>('top');
 const activeKey = ref('1');
-let RankingsData = ref<any>([])
-let RankingsDataOfCompleteNum = ref<any>([])
-let RankingsDataOfNoCompleteNum = ref<any>([])
+let RankingsData = ref<any>([]) // 总体的完成率排行榜所需数据
+let RankingsDataOfCompleteNum = ref<any>([]) // 完成任务量排行榜所需数据
+let RankingsDataOfNoCompleteNum = ref<any>([]) // 未完成的任务总量排行榜所需数据
+let RankingsDataOftotal_signDays = ref<any>([]) // 总体的签到天数排行榜所需数据
 
 const getData = async () => {
     const res: any = await getRankings()
@@ -123,10 +148,20 @@ const getDataOfNoCompleteNum = async () => {
         sunfeiMessage("error", "数据请求异常,请联系负责人")
     }
 }
+
+const getDateOfTotal_SignDays = async () => {
+    const res: any = await getRankingsBySignDays()
+    console.log(res);
+    
+    if (res.code == 200) {
+        RankingsDataOftotal_signDays.value = res.data
+    }
+}
 onMounted(() => {
     getData()
     getDataOfCompleteNum()
     getDataOfNoCompleteNum()
+    getDateOfTotal_SignDays()
 })
 </script>
 
