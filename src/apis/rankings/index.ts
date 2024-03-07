@@ -46,3 +46,14 @@ export function getRankingsByNoCompleteNum() {
     method: "get",
   });
 }
+
+
+// 4. 累计天数签到排行榜
+
+export function getRankingsBySignDays() {
+  // http://127.0.0.1:8080/getRankingsBySignInDays
+  return request({
+    url: "/getRankingsBySignInDays",
+    method: "get",
+  });
+}
