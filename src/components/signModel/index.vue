@@ -23,7 +23,7 @@
 
 <script lang='ts' setup>
 import { getIsSignIn, updateUserSignDays } from "@/apis/user";
-import { sunfeiMessage } from "@/utils";
+
 import { getCurrentUserid } from "@/utils/CurrentUserid";
 import dayjs from "dayjs";
 import { ref, defineExpose, onMounted } from "vue"
@@ -47,11 +47,9 @@ function generateRandomNumber() {
 // 签到
 const singIn = async () => {
     const res: any = await updateUserSignDays(getCurrentUserid())
-    console.log(res);
     if (res.code === 200) {
         // 表示今天已经签到
         IsHavaSign.value = true
-        sunfeiMessage("warning", res.message)
     }
     // 关闭弹出层
     open.value = false
