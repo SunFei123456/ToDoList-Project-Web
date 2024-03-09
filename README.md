@@ -62,41 +62,46 @@ todoList 项目的开发也算心血来潮. 由于平时自己喜欢记录事情
 
 首页
 
-![pc1](https://pic.imgdb.cn/item/65ec20d79f345e8d031569d8.png)
+<img src="./showProjectImg/pc1.png">
+
 
 
 
 签到
 
-![pc2](https://pic.imgdb.cn/item/65ec21c89f345e8d03182559.png)
+<img src="./showProjectImg/pc2.png">
+
 
 
 
 任务列表
 
 
+<img src="./showProjectImg/pc3.png">
 
-![pc3](https://pic.imgdb.cn/item/65ec22b69f345e8d031b10af.png)
 
 
 
 制定任务
 
-![pc4](https://pic.imgdb.cn/item/65ec23919f345e8d031de216.png)
+<img src="./showProjectImg/pc4.png">
+
 
 可视化面板
 
-![pc5](https://pic.imgdb.cn/item/65ec245f9f345e8d032051e9.png)
+<img src="./showProjectImg/pc5.png">
 
 
 
 排行榜
 
-![pc6](https://pic.imgdb.cn/item/65ec256d9f345e8d0324065e.png)
+<img src="./showProjectImg/pc6.png">
+
 
 个人信息
 
-![pc6](https://pic.imgdb.cn/item/65ec260a9f345e8d0325ebf0.png)
+<img src="./showProjectImg/pc7.png">
+
 
 
 
@@ -105,9 +110,10 @@ todoList 项目的开发也算心血来潮. 由于平时自己喜欢记录事情
 ### 手机端展示
 
 
-
-![p1](https://pic.imgdb.cn/item/65ec296e9f345e8d033013cf.png)
-
+<img src="./showProjectImg/Phone1 (1).png">
 
 
-![p2](https://pic.imgdb.cn/item/65ec29979f345e8d033084a4.png)
+
+
+<img src="./showProjectImg/Phone2 (1).png">
+
