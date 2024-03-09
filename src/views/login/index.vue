@@ -142,7 +142,7 @@ const onFinishFailed = (errorInfo: any) => {
             border-radius: 8px;
 
             .title {
-                margin: 0px;
+                margin: 0;
 
             }
 
