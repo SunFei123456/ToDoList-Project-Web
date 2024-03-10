@@ -7,22 +7,41 @@
                 <!-- 用户成长资料展示 -->
                 <div class="account_Level__Panel">
                     <div class="box">
-                        <span class="tags">等级</span> <span class="data">{{ userInfo.level || 100 }} Lv</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <img src="@/assets/svg/level.svg" class="svg" alt="level">
+                            <span class="tags">等级</span>
+                        </div>
+
+                        <span class="data">{{ userInfo.level || 100 }} Lv</span>
+
                     </div>
 
                     <div class="box">
-                        <span class="tags">经验点</span> <span class="data">{{ userInfo.experience }} </span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <img src="@/assets/svg/experience.svg" class="svg" alt="experience">
+                            <span class="tags">经验点</span>
+                        </div>
+                        <span class="data">{{ userInfo.experience }} </span>
                     </div>
                     <div class="box">
-                        <span class="tags">贝壳点</span> <span class="data"> {{ userInfo.points }}</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <img src="@/assets/svg/seashell.svg" class="svg" alt="seashell">
+                            <span class="tags">贝壳点</span>
+                        </div>
+                        <span class="data"> {{ userInfo.points }}</span>
                     </div>
                     <div class="box">
-                        <span class="tags">称号</span> <span class="data"> {{ userInfo.epithet || '大神' }}</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <img src="@/assets/svg/epithet.svg" class="svg" alt="epithet">
+                            <span class="tags">称号</span>
+                        </div>
+                        <span class="data"> {{ userInfo.epithet || '大神' }}</span>
                     </div>
                 </div>
 
             </div>
             <br />
+
             <div class="form">
                 <form action="" method="get">
                     <!-- 用户名 -->
@@ -96,7 +115,13 @@
                     </div>
                 </form>
             </div>
-            <button id='succeed-button' @click="updateUserInfo()" style="width: 40%; height: 3rem">提交修改</button>
+
+            <!-- 操作按钮组 -->
+            <div class="operation">
+                <button id='submit-button' class="commoneStyleForbtn" @click="updateUserInfo()">提交修改</button>
+                <button id='recover-button' class="commoneStyleForbtn" @click="getRandomSentence()">随机激励语</button>
+            </div>
+
         </div>
 
     </div>
@@ -108,9 +133,7 @@ import { updateUserInfoApi } from '@/apis/user';
 import { useUserStore } from '@/store/user/userStore';
 import { getCurrentUserid } from '@/utils/CurrentUserid';
 import UploadAvatar from "@/components/uploadImg/index.vue";
-import { onMounted } from 'vue'
 import { sunfeiMessage } from '@/utils';
-
 
 
 const userInfo = useUserStore()
@@ -120,6 +143,7 @@ const userInfo = useUserStore()
 const handleChange = (value: string) => {
     console.log(`selected ${value}`);
 };
+
 
 // 更新个人信息
 const updateUserInfo = async () => {
@@ -132,7 +156,6 @@ const updateUserInfo = async () => {
         introduction: userInfo.introduction, // 个签
     }
     const res: any = await updateUserInfoApi(getCurrentUserid(), data)
-    console.log(res);
 
     if (res.code == 200) {
         sunfeiMessage('success', "个人信息修改成功");
@@ -141,10 +164,17 @@ const updateUserInfo = async () => {
     }
 }
 
+// 随机首页激励语
+const getRandomSentence = async () => {
+    const res = await fetch("https://zj.v.api.aa1.cn/api/wenan-zl/?type=json")
+    const data = await res.json()
+    if (data) {
+        userInfo.HomeMotivationalWords = data.msg
+    }
 
-onMounted(() => {
 
-})
+}
+
 
 </script>
 
@@ -164,7 +194,8 @@ onMounted(() => {
         flex-direction: column;
         width: 100%;
         padding: 1rem;
-        background-color: #ffffff;
+        // 盒阴影
+
 
         .headPanel {
             display: flex;
@@ -184,14 +215,23 @@ onMounted(() => {
                     display: flex;
                     flex-direction: column;
                     box-sizing: border-box;
-                    padding: 16px 20px;
-                    background: #f7f8fa;
+                    padding: 14px 8px;
+                    // background: #C9D6FF;  /* fallback for old browsers */
+                    // background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
+                    // background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
                     width: 150px;
                     height: -webkit-fit-content;
                     height: -moz-fit-content;
                     height: fit-content;
+                    border-radius: 5px;
+                    box-shadow: 0px 3px 20px -6px rgba(0, 0, 0, 0.3);
 
-                    border-radius: 2px;
+                    .svg {
+                        width: 25px;
+                        height: 25px;
+                    }
 
                     .tags {
                         font-size: 14px;
@@ -229,8 +269,14 @@ onMounted(() => {
 
                 label {
                     font-size: .875rem;
+                    font-weight: 600;
 
 
+                }
+
+                #email {
+                    color: #262626bf;
+                    border-style: dotted;
                 }
 
                 input {
@@ -239,8 +285,9 @@ onMounted(() => {
                     padding-left: .75rem;
                     border-style: none;
                     border-radius: .375rem;
-                    color: #262626bf;
-                    background-color: #00000008;
+                    color: #000000;
+                    background-color: #ecebebaa;
+                    ;
                     outline: 2px solid #0000;
 
                     outline-offset: 2px;
@@ -248,7 +295,6 @@ onMounted(() => {
 
                     &:focus {
                         outline: 2px solid #51c9ff; //边框不用border，用outline
-                        // background: rgba(3, 16, 28, 0); //背景色
                         color: #000000;
                     }
                 }
@@ -256,6 +302,50 @@ onMounted(() => {
                 textarea {
                     height: 150px;
                     padding: 0.625rem;
+                    border-radius: 0.375rem;
+                    border: none;
+                    color: #000000;
+                    background-color: #ecebebaa;
+                    outline: 2px solid #0000;
+                    outline-offset: 2px;
+                    transition: outline 0.3s ease;
+
+                    &:focus {
+                        outline: 2px solid #51c9ff; //边框不用border，用outline
+
+                    }
+                }
+            }
+
+        }
+
+        .operation {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+
+            .commoneStyleForbtn {
+                width: 40%;
+                height: 3rem;
+                border-radius: 10px;
+                color: #000000;
+                transition: all 0.25s linear;
+            }
+
+            #submit-button {
+                background-color: #00FFD7;
+
+                &:hover {
+                    box-shadow: 0 0 10px #000000;
+                }
+            }
+
+            #recover-button {
+                background-color: #18FF9B;
+
+                &:hover {
+                    box-shadow: 0 0 10px #000000;
                 }
             }
 
@@ -263,6 +353,8 @@ onMounted(() => {
 
     }
 }
+
+
 
 // 媒体响应
 @media screen and (max-width: 768px) {
