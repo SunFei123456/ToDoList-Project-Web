@@ -7,10 +7,13 @@ import axios from "axios";
 // 3. 请求拦截器 / 响应拦截器
 
 const request = axios.create({
-  baseURL: "http://127.0.0.1:8080",
+  baseURL: import.meta.env.VITE_SERVER_URL as any,
   timeout: 3000,
-
 });
+
+
+
+
 
 // 请求拦截器
 request.interceptors.request.use(
