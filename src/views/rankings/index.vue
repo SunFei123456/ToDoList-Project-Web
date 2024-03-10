@@ -11,7 +11,7 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsData" :key="item.UserId">
-                        <span class="left"># {{ index + 1 }}</span>
+                        <span :style="{ color: index <= 2 ? getRankColor(index) : 'black' }" class="left"># {{ index + 1 }}</span>
                         <div class="middle">
                             <img :src="item.UserAvatar" alt="UserAvatar">
                             <div class="userInfo">
@@ -36,7 +36,7 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOfCompleteNum" :key="item.UserId">
-                        <span class="left"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -60,7 +60,7 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOfNoCompleteNum" :key="item.UserId">
-                        <span class="left"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -84,7 +84,7 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOftotal_signDays" :key="index">
-                        <span class="left"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -152,9 +152,17 @@ const getDataOfNoCompleteNum = async () => {
 const getDateOfTotal_SignDays = async () => {
     const res: any = await getRankingsBySignDays()
     console.log(res);
-    
+
     if (res.code == 200) {
         RankingsDataOftotal_signDays.value = res.data
+    }
+}
+const getRankColor = (index: number) => {
+    switch (index) {
+        case 0: return '#FFD700';
+        case 1: return '#C0C0C0';
+        case 2: return '#B87333';
+        default: return 'black';
     }
 }
 onMounted(() => {
@@ -187,15 +195,12 @@ onMounted(() => {
             display: flex;
             justify-content: space-between;
             align-items: end;
-            height: 50px;
-            border-bottom: 1px solid #1e80ff;
-            border-radius: 8px;
 
             .left {
                 display: block;
                 width: 10%;
                 line-height: 50px;
-                font-weight: bold;
+                // font-weight: bold;
                 font-size: 28px;
                 margin-right: 10px;
             }
@@ -209,7 +214,7 @@ onMounted(() => {
                     width: 50px;
                     height: 50px;
                     object-fit: cover;
-                    border-radius: 10px;
+                    border-radius: 5px;
                     margin-right: 15px;
                 }
             }
