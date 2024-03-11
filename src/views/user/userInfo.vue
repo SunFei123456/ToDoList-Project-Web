@@ -12,7 +12,7 @@
                             <span class="tags">等级</span>
                         </div>
 
-                        <span class="data">{{ userInfo.level || 100 }} Lv</span>
+                        <span class="data">Lv {{ userInfo.level || 100 }} </span>
 
                     </div>
 
@@ -35,7 +35,7 @@
                             <img src="@/assets/svg/epithet.svg" class="svg" alt="epithet">
                             <span class="tags">称号</span>
                         </div>
-                        <span class="data"> {{ userInfo.epithet || '大神' }}</span>
+                        <span class="data"> {{ epithet }}</span>
                     </div>
                 </div>
 
@@ -134,6 +134,8 @@ import { useUserStore } from '@/store/user/userStore';
 import { getCurrentUserid } from '@/utils/CurrentUserid';
 import UploadAvatar from "@/components/uploadImg/index.vue";
 import { sunfeiMessage } from '@/utils';
+import { notification } from 'ant-design-vue';
+import { onMounted, ref, watch } from 'vue';
 
 
 const userInfo = useUserStore()
@@ -170,10 +172,49 @@ const getRandomSentence = async () => {
     const data = await res.json()
     if (data) {
         userInfo.HomeMotivationalWords = data.msg
+        notification.success({
+            message: '随机激励语',
+            description: data.msg
+        })
     }
-
-
 }
+
+const epithet = ref<string>('')
+function getLevelTitle(experience: number) {
+    if (experience < 500) {
+        return '自律小白者';
+    } else if (experience < 1000) {
+        return '自律成长者';
+    } else if (experience < 1700) {
+        return '持续进步者';
+    } else if (experience < 2800) {
+        return '稳步前行者';
+    } else if (experience < 4400) {
+        return '自我挑战者';
+    } else if (experience < 6800) {
+        return '自律达人';
+    } else if (experience < 9800) {
+        return '模范执行者';
+    } else if (experience < 13000) {
+        return '高效自律者';
+    } else if (experience < 16000) {
+        return '自我超越者';
+    } else {
+        return '自律宗师';
+    }
+}
+// 使用 watch 函数监听 userInfo.experience 的变化
+watch(() => userInfo.experience, (newExperience) => {
+    epithet.value = getLevelTitle(newExperience);
+});
+
+onMounted(() => {
+    epithet.value = getLevelTitle(userInfo.experience)
+})
+
+
+
+
 
 
 </script>
