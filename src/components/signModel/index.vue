@@ -6,7 +6,7 @@
         </div>
 
         <!-- 弹出层 -->
-        <div class="popup" :style="{ backgroundImage: `url(/src/assets/webp/${generateRandomNumber()}.jpg)` }">
+        <div class="popup" :style="{ background: gradientColor }">
             <!-- 当前日期 -->
             <div class="commonStyle Day">
                 {{ date }}
@@ -15,6 +15,8 @@
             <div class="commonStyle YearAndMonth">
                 {{ year }}.{{ month }}
             </div>
+
+            <div class="text">{{ quote }}</div>
             <button class="signIn" @click="singIn" v-if="!IsHavaSign">立即签到 </button>
             <button class="signIn" v-else :disabled="!IsHavaSign">当天已经签到 </button>
         </div>
@@ -34,16 +36,28 @@ const IsHavaSign = ref<boolean>(false)
 const year = ref()
 const month = ref()
 const date = ref()
+const gradientColor = ref<string>('')
 
-// 生成随机1,6数字 用来拼接背景图片
-// 生成 1 到 6 之间的随机整数
-function generateRandomNumber() {
-    // Math.random() 生成 0 到 1 之间的小数
-    // 乘以 6，将范围变为 0 到 5 之间的小数
-    // 使用 Math.floor() 向下取整，得到 0 到 5 之间的整数
-    // 最后加上 1，将范围变为 1 到 6 之间的整数
-    return Math.floor(Math.random() * 6) + 1;
+const quote = ref<string>('')
+
+// 定义6个渐变颜色数组
+const generateRandomGradient = () => {
+    const r1 = Math.floor(Math.random() * 256);
+    const g1 = Math.floor(Math.random() * 256);
+    const b1 = Math.floor(Math.random() * 256);
+    const r2 = Math.floor(Math.random() * 256);
+    const g2 = Math.floor(Math.random() * 256);
+    const b2 = Math.floor(Math.random() * 256);
+    // 生成渐变起点颜色
+    const startColor = `rgb(${r1},${g1},${b1})`;
+    // 生成渐变终点颜色
+    const endColor = `rgb(${r2},${g2},${b2})`;
+    // 随机决定渐变方向
+    const direction = Math.random() > 0.5 ? '45deg' : '90deg';
+    // 应用样式
+    gradientColor.value = `linear-gradient(${direction},${startColor} 0%, ${endColor} 100%)`;
 }
+
 // 签到
 const singIn = async () => {
     const res: any = await updateUserSignDays(getCurrentUserid())
@@ -53,7 +67,6 @@ const singIn = async () => {
     }
     // 关闭弹出层
     open.value = false
-
 }
 
 onMounted(async () => {
@@ -61,14 +74,37 @@ onMounted(async () => {
     let now = dayjs()
     year.value = "" + now.year()
     month.value = "0" + (now.month() + 1)
-    date.value = "0" + now.date()
+    now.date() < 10 ? date.value = "0" + now.date() : date.value = now.date()
 
     const res = await getIsSignIn(getCurrentUserid())
     IsHavaSign.value = res.data.is_sign_in_today
 })
+// 获取每日一言
+const getQuote = async () => {
+    const response = await fetch('https://api.vvhan.com/api/ian?type=json')
+    if (response.status === 200) {
+        const data = await response.json()
+        if (data) {
+            quote.value = data.data.vhan
+        } else {
+            quote.value = '每日一言'
+        }
+    } else {
+        quote.value = '每日一言'
+    }
+
+}
+
+const openModel = async () => {
+    await generateRandomGradient()
+    await getQuote()
+    open.value = true
+    
+}
+
 
 // 暴露变量
-defineExpose({ open })
+defineExpose({ openModel })
 
 </script>
 
@@ -86,12 +122,16 @@ defineExpose({ open })
 
 // 弹出层
 .popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 350px;
     height: 400px;
+    padding: 1rem;
     border-radius: 16px;
     background-size: cover;
     background-position: center center;
@@ -125,6 +165,12 @@ defineExpose({ open })
         height: 30px;
         text-align: center;
         line-height: 30px;
+    }
+
+    .text {
+        font-size: 14px;
+        color: #fff;
+
     }
 
     // 签到按钮
