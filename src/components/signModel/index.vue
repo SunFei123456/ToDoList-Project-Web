@@ -4,7 +4,6 @@
         <div class="mask" @click="open = false">
 
         </div>
-
         <!-- 弹出层 -->
         <div class="popup" :style="{ background: gradientColor }">
             <!-- 当前日期 -->
@@ -17,20 +16,24 @@
             </div>
 
             <div class="text">{{ quote }}</div>
+
             <button class="signIn" @click="singIn" v-if="!IsHavaSign">立即签到 </button>
             <button class="signIn" v-else :disabled="!IsHavaSign">当天已经签到 </button>
         </div>
+       
     </div>
 </template>
 
 <script lang='ts' setup>
 import { getIsSignIn, updateUserSignDays } from "@/apis/user";
+import { notification } from 'ant-design-vue';
 
 import { getCurrentUserid } from "@/utils/CurrentUserid";
 import dayjs from "dayjs";
 import { ref, defineExpose, onMounted } from "vue"
+import { useUserStore } from "@/store/user/userStore";
 const open = ref<boolean>(false)
-
+const currentUser = useUserStore()
 const IsHavaSign = ref<boolean>(false)
 
 const year = ref()
@@ -60,13 +63,25 @@ const generateRandomGradient = () => {
 
 // 签到
 const singIn = async () => {
+   
     const res: any = await updateUserSignDays(getCurrentUserid())
-    if (res.code === 200) {
-        // 表示今天已经签到
+    // 当天签到
+    if (res.code === 200 && res.message == "签到成功") {
         IsHavaSign.value = true
+        notification.success({
+            message: `签到成功,奖励:${res.reward}`,
+        })
+        // 签到奖励经验 15分
+        currentUser.experience += 15
+        // 签到奖励贝壳点
+        currentUser.points += 10
     }
-    // 关闭弹出层
-    open.value = false
+    // 两秒之后 自动关闭弹框
+    setTimeout(() => {
+        open.value = false
+    }, 1500)
+ 
+    
 }
 
 onMounted(async () => {
@@ -81,25 +96,22 @@ onMounted(async () => {
 })
 // 获取每日一言
 const getQuote = async () => {
-    const response = await fetch('https://api.vvhan.com/api/ian?type=json')
+    const url = import.meta.env.VITE_SERVER_URL + "/get_sentiment"
+    const response = await fetch(url)
     if (response.status === 200) {
         const data = await response.json()
-        if (data) {
-            quote.value = data.data.vhan
-        } else {
-            quote.value = '每日一言'
+        if (data.code == 200) {
+            quote.value = data.sentiment
+        }else{
+            quote.value = '今天没有每日一言哦'
         }
-    } else {
-        quote.value = '每日一言'
     }
-
 }
 
 const openModel = async () => {
     await generateRandomGradient()
     await getQuote()
     open.value = true
-    
 }
 
 
@@ -120,6 +132,7 @@ defineExpose({ openModel })
     z-index: 999;
 }
 
+
 // 弹出层
 .popup {
     display: flex;
@@ -131,11 +144,11 @@ defineExpose({ openModel })
     transform: translate(-50%, -50%);
     width: 350px;
     height: 400px;
-    padding: 1rem;
     border-radius: 16px;
-    background-size: cover;
-    background-position: center center;
+    padding: 1rem;
     z-index: 1000;
+    transition: all 0.25s linear;
+    
 
     // 下面共同的样式进行抽离总和
     .commonStyle {
