@@ -11,7 +11,8 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsData" :key="item.UserId">
-                        <span :style="{ color: index <= 2 ? getRankColor(index) : 'black' }" class="left"># {{ index + 1 }}</span>
+                        <span :style="{ color: index <= 2 ? getRankColor(index) : 'black' }" class="left"># {{ index + 1
+                            }}</span>
                         <div class="middle">
                             <img :src="item.UserAvatar" alt="UserAvatar">
                             <div class="userInfo">
@@ -36,7 +37,8 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOfCompleteNum" :key="item.UserId">
-                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1
+                            }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -60,7 +62,8 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOfNoCompleteNum" :key="item.UserId">
-                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1
+                            }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -84,7 +87,8 @@
                 </template>
                 <div id="leaderboard">
                     <div class="user" v-for="(item, index) in RankingsDataOftotal_signDays" :key="index">
-                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1 }}</span>
+                        <span class="left" :style="{ color: index <= 2 ? getRankColor(index) : 'black' }"># {{ index + 1
+                            }}</span>
                         <div class="middle">
                             <img :src="item.avatar_url" alt="UserAvatar">
                             <div class="userInfo">
@@ -264,6 +268,13 @@ onMounted(() => {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
+    :deep(.ant-tabs-content-holder) {
+
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+
 
 }
 </style>
