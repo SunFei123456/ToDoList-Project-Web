@@ -1,6 +1,6 @@
 <template>
     <a-upload v-model:file-list="fileList" name="avatar_file" list-type="picture-card" class="avatar-uploader"
-        :max-count="1" :show-upload-list="false" action="http://127.0.0.1:8080/uploadImage"
+        :max-count="1" :show-upload-list="false" :capture="null" :action="uploadUrl"
         :before-upload="beforeUpload" @change="handleChange">
         <img v-if="imageUrl" :src="imageUrl" alt="avatar" class="avatar" />
         <div v-else>
@@ -33,7 +33,9 @@ const imageUrl = ref<string>('');
 const userInfo = useUserStore()
 imageUrl.value = userInfo.avatar_url
 
-
+const uploadUrl = ()=>{
+    return import.meta.env.VITE_SERVER_URL + "/uploadImage"
+}
 const handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
         loading.value = true;
