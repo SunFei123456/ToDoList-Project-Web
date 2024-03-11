@@ -5,7 +5,6 @@ import { GetUserInfo } from "@/apis/user/index";
 interface UserState {
   id: number | null;
   avatar_url: string; // 用户头像
-  epithet: string; // 称号
   experience: number | null; // 经验值
   gender: string; // 性别
   hobbies: string; // 兴趣
@@ -24,7 +23,6 @@ export const useUserStore = defineStore(
     state: (): UserState => ({
       id: 0, // id
       avatar_url: "", // 用户头像
-      epithet: "", // 称号
       experience: 0, // 经验值
       gender: "", // 性别
       hobbies: "", // 兴趣
@@ -45,7 +43,7 @@ export const useUserStore = defineStore(
         if (res.code == 200) {
           this.id = res.data.id;
           this.avatar_url = res.data.avatar;
-          this.epithet = res.data.epithet;
+
           this.experience = res.data.experience;
           this.gender = res.data.gender;
           this.hobbies = res.data.hobbies;
