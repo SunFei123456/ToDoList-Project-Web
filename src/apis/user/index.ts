@@ -58,7 +58,7 @@ export function updateUserSignDays(currentUser: string | null) {
   return request({
     url: `/user/increaseSignInDays/${currentUser}`,
     method: "put",
-  })
+  });
 }
 
 // 获取用户累计签到的天数
@@ -66,7 +66,7 @@ export function getUserSignDays(currentUser: string | null) {
   return request({
     url: `/user/getSignInDays/${currentUser}`,
     method: "get",
-  })
+  });
 }
 
 // 判断用户今天是否已经签到过
@@ -74,5 +74,13 @@ export function getIsSignIn(currentUser: string | null) {
   return request({
     url: `/user/isSignInToday/${currentUser}`,
     method: "get",
-  })
+  });
+}
+
+// 获取用户注册到现在的天数
+export function getRegistrationDays(user_id: string | null) {
+  return request({
+    url: `/user/registration_days/${user_id}`,
+    method: "get",
+  });
 }
