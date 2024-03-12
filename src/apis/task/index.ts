@@ -52,3 +52,23 @@ export function getTypeTasksNum(userid: string | null) {
     method: "get",
   })
 }
+
+
+
+// 7. 获取制定的任务总量
+// http://127.0.0.1:8080/todolist/getTasksNum/1
+export function getTaskNum(userid: string | null) {
+  return request({
+    url: `/todolist/getTasksNum/${userid}`,
+    method: "get",
+  })
+}
+
+// 8. 获取已完成的任务总量
+// http://127.0.0.1:8080/todolist/getComplete_TasksNum/1
+export function getCompleteTaskNum(userid: string | null) {
+  return request({
+    url: `/todolist/getComplete_TasksNum/${userid}`,
+    method: "get",
+  })
+}
