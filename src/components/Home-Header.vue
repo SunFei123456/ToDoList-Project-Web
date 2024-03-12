@@ -1,7 +1,7 @@
 <template>
   <div class="HH-card">
     <!-- 头像 -->
-    <a-avatar :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }" :src="user.avatar_url || defaultAvatar"
+    <a-avatar :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }" :src="user.avatar_url "
       :draggable="isDrag" class="avatar">
     </a-avatar>
 
@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { useUserStore } from "@/store/user/userStore";
-import defaultAvatar from "@/assets/image/avatar.png";
+
 import determineGreeting from "@/utils/determineGreeting";
 import { ref } from "vue";
 const user = useUserStore()
