@@ -203,7 +203,32 @@ function getLevelTitle(experience: number) {
         return '自律宗师';
     }
 }
-// 使用 watch 函数监听 userInfo.experience 的变化
+
+// function getLevel(experience: number) {
+//     if (experience < 500) {
+//         return '1';
+//     } else if (experience < 1000) {
+//         return '2';
+//     } else if (experience < 1700) {
+//         return '3';
+//     } else if (experience < 2800) {
+//         return '4';
+//     } else if (experience < 4400) {
+//         return '5';
+//     } else if (experience < 6800) {
+//         return '6';
+//     } else if (experience < 9800) {
+//         return '7';
+//     } else if (experience < 13000) {
+//         return '8';
+//     } else if (experience < 16000) {
+//         return '9';
+//     } else {
+//         return '10';
+//     }
+// }
+// // 使用 watch 函数监听 userInfo.experience 的变化
+// // 需要变化的数据包括 =>. level  和  epithet
 watch(() => userInfo.experience, (newExperience) => {
     epithet.value = getLevelTitle(newExperience);
 });

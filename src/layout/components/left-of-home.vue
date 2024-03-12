@@ -1,5 +1,6 @@
 <template>
     <div id="left-of-home" :style="{ backgroundColor: userStore.owner.sidebar_bgColor }">
+        <!-- 主题切换 -->
         <div id="theme">
             <img src="@/assets/svg/clothes.svg" alt="" width="25" height="25"
                 @click="IsShowColorBoard = !IsShowColorBoard">
@@ -12,11 +13,13 @@
                 </a-tabs>
             </a-card>
         </div>
+        <!-- 签到 -->
+        <button id="sign-in" @click="showSignInModal">签到</button>
 
-        <a-avatar class="avatar" :src="userStore.avatar_url || avatar"></a-avatar>
-        
+
+        <a-avatar class="avatar" :src="userStore.avatar_url"></a-avatar>
+
         <!-- 头像 -->
-
         <span :style="{ fontSize: userStore.owner.name ? '1.2rem' : '1.25rem' }">
             {{ userStore.owner.name || '用户' }}
         </span>
@@ -30,7 +33,7 @@
                 <template #title>
                     <span>首页</span>
                 </template>
-                <button @click="goPath('home')" class="btn">
+                <button @click="goPath('home')" class="btn" :class="{ active: activeName === 'home' }">
                     <Icon size="20">
                         <Home />
                     </Icon>
@@ -42,7 +45,7 @@
                 <template #title>
                     <span>任务列表</span>
                 </template>
-                <button @click="goPath('list')" class="btn">
+                <button @click="goPath('list')" class="btn" :class="{ active: activeName === 'list' }">
                     <Icon size="20">
                         <List />
                     </Icon>
@@ -54,7 +57,7 @@
                 <template #title>
                     <span>简约任务描述</span>
                 </template>
-                <button class="btn" @click="goPath('simple-list')">
+                <button class="btn" @click="goPath('simple-list')" :class="{ active: activeName === 'simple-list' }">
                     <Icon size="20">
                         <SimpleList />
                     </Icon>
@@ -66,7 +69,7 @@
                 <template #title>
                     <span>数据可视化</span>
                 </template>
-                <button @click="goPath('DataMetrics')" class="btn">
+                <button @click="goPath('DataMetrics')" class="btn" :class="{ active: activeName === 'DataMetrics' }">
                     <Icon size="20">
                         <CellularOutline />
                     </Icon>
@@ -76,23 +79,37 @@
 
             <!-- 排行榜 -->
             <a-tooltip placement="top">
+
                 <template #title>
-                    <span>rankings</span>
+                    <span>排行榜</span>
                 </template>
-                <button class="btn" @click="goPath('rankings')">
+                <button class="btn" @click="goPath('rankings')" :class="{ active: activeName === 'rankings' }">
                     <Icon size="20">
                         <Rankings />
                     </Icon>
                 </button>
             </a-tooltip>
-            
+
+            <!-- 有奖活动 -->
+            <a-tooltip placement="top">
+                <template #title>
+                    <span>活动</span>
+                </template>
+                <button class="btn" @click="goPath('activity')" :class="{ active: activeName === 'activity' }">
+                    <Icon size="20">
+                        <Activity />
+                    </Icon>
+                </button>
+            </a-tooltip>
+
 
             <!-- 个人信息 -->
             <a-tooltip placement="top">
+
                 <template #title>
                     <span>个人信息</span>
                 </template>
-                <button class="btn" @click="goPath('userInfo')">
+                <button class="btn" @click="goPath('userInfo')" :class="{ active: activeName === 'userInfo' }">
                     <Icon size="20">
                         <userInfo />
                     </Icon>
@@ -102,10 +119,11 @@
 
             <!-- 全屏切换 -->
             <a-tooltip placement="top">
+
                 <template #title>
                     <span>全屏</span>
                 </template>
-                <button class="btn">
+                <button class="btn" :class="{ active: isFullScreen }">
                     <Icon size="20" v-if="isFullScreen" @click="changeScreen">
                         <CompressOutlined />
                     </Icon>
@@ -117,10 +135,11 @@
 
             <!-- 切换账号 -->
             <a-tooltip placement="top">
+
                 <template #title>
                     <span>切换账号</span>
                 </template>
-                <button class="btn" @click="goPath('login')">
+                <button class="btn" @click="goPath('login')" :class="{ active: activeName === 'login' }">
                     <Icon size="20">
                         <ChangeAccount />
                     </Icon>
@@ -128,9 +147,10 @@
             </a-tooltip>
 
 
-            
+
             <!-- 退出登录 -->
             <a-tooltip placement="top">
+
                 <template #title>
                     <span>退出</span>
                 </template>
@@ -145,6 +165,7 @@
 
             <!-- 项目Github 地址 -->
             <a-tooltip placement="top">
+
                 <template #title>
                     <span>GitHub</span>
                 </template>
@@ -154,20 +175,20 @@
                     </Icon>
                 </button>
             </a-tooltip>
-
-
         </div>
+
     </div>
+    <SignModel ref="signmodelRef"></SignModel>
 </template>
 
 <script lang='ts' setup>
 import router from "@/router/index.ts";
-// 导入图片
-import avatar from "@/assets/image/avatar.png";
+
 
 // compress-outlined
 import { Icon } from "@vicons/utils";
 import { CompressOutlined } from '@ant-design/icons-vue'
+
 
 import {
     HomeOutline as Home,
@@ -179,7 +200,8 @@ import {
     LogInOutline as LoginOut,
     ScanOutline as Fullscrenn,
     CellularOutline,
-    TrophyOutline as Rankings
+    TrophyOutline as Rankings,
+    RocketOutline as Activity
 } from "@vicons/ionicons5";
 
 import { message } from 'ant-design-vue'
@@ -189,17 +211,21 @@ import { useUserStore } from "@/store/user/userStore";
 import { updateUserSidebarColor } from "@/apis/user";
 import { getCurrentUserid } from "@/utils/CurrentUserid";
 import { sunfeiMessage } from "@/utils";
+import SignModel from "@/components/signModel/index.vue";
 
-
+const signmodelRef = ref<any>()
 const userStore = useUserStore()
-
-
 
 const isFullScreen = ref(false)
 const IsShowColorBoard = ref(false)
 
 
+// 默认home
+const activeName = ref("home")
 const goPath = (url: string) => {
+    console.log(url);
+    activeName.value = url
+    // 当前按钮修改颜色 active
     router.push(`/${url}`)
 }
 
@@ -207,6 +233,16 @@ const Key = ref("1")
 
 
 
+const showSignInModal = () => {
+    userStore.experience += 200
+    
+    // 使用定时器，优化用户体验一下
+
+    signmodelRef.value.openModel()
+
+    // 打开签到弹窗
+
+}
 
 // 跳转GitHub
 function goGithub() {
@@ -244,9 +280,10 @@ document.addEventListener("keyup", onKeyUp)
 
 // 纯色
 const colors = [
-    '#ffffff', 'rgb(255,92,138)', 'rgb(113,127,249)', 'rgb(71,145,235)', 'rgb(255,143,87)', 'rgb(106,204,25)',
-    '#82FFB6', '#4C9CA9', '#D3B9FF', '#ACA7CB', '#fb4b00', '#00d8dd'
+    '#ffffff', 'rgb(255,92,138)', 'rgb(113,127,249)', 'rgb(255,143,87)', 'rgb(255,215,0)', '#FFDAFE',
+    '#82FFB6', '#4C9CA9', '#D3B9FF', '#fb4b00', '#00d8dd', '#C9D6FF'
 ];
+
 
 const changeBackgroundColor = async (color: string) => {
     // 拿到元素
@@ -293,6 +330,12 @@ const changeScreen = () => {
 </script>
 
 <style lang='scss' scoped>
+// 点击哪个menu-> item  哪个item 高亮
+.active {
+
+    color: #1900ff;
+}
+
 #left-of-home {
     position: relative;
     width: 100%;
@@ -304,16 +347,78 @@ const changeScreen = () => {
     gap: 16px;
     transition: background-color 0.2s ease-in-out;
 
+    // 主题切换按钮的样式
     #theme {
         position: absolute;
         left: 10px;
         top: 10px;
 
         img {
+            width: 25px;
+            height: 25px;
             cursor: pointer;
             filter: contrast(0.8);
             transition: all 0.25s linear;
         }
+    }
+
+
+    // 签到按钮的样式
+    #sign-in {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 15px 20px;
+        font-size: 16px;
+        background: transparent;
+        border: none;
+        color: #f0f0f0;
+        z-index: 1;
+    }
+
+    #sign-in::after,
+    #sign-in::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: -99999;
+        transition: all .4s;
+    }
+
+    #sign-in::before {
+        transform: translate(0%, 0%);
+        width: 100%;
+        height: 100%;
+        background: #28282d;
+        border-radius: 10px;
+    }
+
+    #sign-in::after {
+        transform: translate(10px, 10px);
+        width: 35px;
+        height: 35px;
+        background: #ffffff15;
+        backdrop-filter: blur(5px);
+        border-radius: 50px;
+    }
+
+    #sign-in:hover::before {
+        transform: translate(5%, 20%);
+        width: 110%;
+        height: 110%;
+    }
+
+    #sign-in:hover::after {
+        border-radius: 10px;
+        transform: translate(0, 0);
+        width: 100%;
+        height: 100%;
+    }
+
+    #sign-in:active::after {
+        transition: 0s;
+        transform: translate(0, 5%);
     }
 
 
@@ -362,4 +467,4 @@ const changeScreen = () => {
     flex-wrap: wrap !important;
     gap: .625rem !important;
 }
-</style>../apis
+</style>

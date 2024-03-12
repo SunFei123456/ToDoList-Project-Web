@@ -83,8 +83,14 @@ const onFinish = async (values: any) => {
             // 两边统一进行转换为大写 然后进行判断
             const userInputVerifyCode = verifyCode.value.toLocaleUpperCase()
             const generatedVerifyCode = imgCode.value.toLocaleUpperCase()
+   
             if (userInputVerifyCode !== generatedVerifyCode) {
+               
                 sunfeiMessage('error', '验证码不正确')
+                // 如果验证码不正确 重新绘制验证
+                verifyRef.value.handleDraw()
+                // 将输入的验证码清空
+                verifyCode.value =''
             } else {
                 try {
                     // 调取接口,进行登录

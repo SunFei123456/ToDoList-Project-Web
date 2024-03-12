@@ -275,8 +275,6 @@ const changeListStatus = (id: number, index: number) => {
                 // 模拟请求 加载loading
                 await sendPutrequest(id)
                 status[index] = true
-                // 当前用户经验值 加40点
-                currentUserInfo.experience += 40
             } catch {
                 return console.error("Oops errors!");
             }
@@ -304,8 +302,6 @@ const recoverTask = (id: number, index: number) => {
                 try {
                     sendPutrequest(id)
                     status[index] = false
-                    // 当前用户经验值 减40点
-                    currentUserInfo.experience -= 40
                 } catch {
                     return console.error("Oops errors!");
                 }
@@ -387,7 +383,7 @@ const sendPutrequest = async (id: number) => {
         if ((response as any).tasks_status == true) {
             // console.log("提交");
             notification.success({
-                message: `提交成功,成功获取40经验值！😽`,
+                message: `任务已完成！😽`,
 
                 onClick: () => {
                     console.log("无");
@@ -396,7 +392,7 @@ const sendPutrequest = async (id: number) => {
         } else {
             // console.log("撤回");
             notification.warning({
-                message: `恢复成功,经验值收回 😩`,
+                message: `任务已被撤回！`,
 
                 onClick: () => {
                     console.log("无");

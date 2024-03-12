@@ -86,9 +86,9 @@ const onFinish = async (values: any) => {
             } else {
                 sunfeiMessage('error', '注册失败');
             }
-        } catch (error) {
+        } catch (error:any) {
             console.error('注册过程中出现错误:', error);
-            sunfeiMessage('error', '注册过程中出现错误');
+            sunfeiMessage('error', error.detail);
         }
     }
 

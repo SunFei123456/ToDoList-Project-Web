@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 import { getCurrentUserid } from "@/utils/CurrentUserid";
 
@@ -6,7 +6,7 @@ import { getCurrentUserid } from "@/utils/CurrentUserid";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: "/register",
@@ -82,6 +82,14 @@ const router = createRouter({
           },
           component: () => import("@/views/rankings/index.vue"),
         },
+        {
+          path: "/activity",
+          name: "activity",
+          meta: {
+            title: "有奖活动",
+          },
+          component: () => import("@/views/prize_activity/index.vue"),
+        },
       ],
     },
   ],
@@ -97,6 +105,8 @@ const router = createRouter({
 // 路由守卫
 // 用来在路由切换前和切换后执行一些逻辑，例如权限验证、页面加载状态控制、页面切换动画等。
 router.beforeEach((to, from, next) => {
+  console.log(from, to, "路由守卫");
+  
   // 修改浏览器窗口的标题
   document.title = to.meta.title as string;
   // 在路由切换前开始进度条
