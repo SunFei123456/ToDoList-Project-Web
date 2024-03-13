@@ -157,26 +157,43 @@ const updateUserInfo = async () => {
         HomeMotivationalWords: userInfo.HomeMotivationalWords, // 首页激励语
         introduction: userInfo.introduction, // 个签
     }
-    const res: any = await updateUserInfoApi(getCurrentUserid(), data)
-
-    if (res.code == 200) {
-        sunfeiMessage('success', "个人信息修改成功");
+    // 个签不能查过28个字符
+    if (data.introduction.length > 28) {
+        sunfeiMessage('error', "个性签名不能超过28个字符");
     } else {
-        sunfeiMessage('error', "个人信息修改失败");
+        const res: any = await updateUserInfoApi(getCurrentUserid(), data)
+
+        if (res.code == 200) {
+            sunfeiMessage('success', "个人信息修改成功");
+        } else {
+            sunfeiMessage('error', "个人信息修改失败");
+        }
     }
+
 }
+
 
 // 随机首页激励语
 const getRandomSentence = async () => {
-    const res = await fetch("https://zj.v.api.aa1.cn/api/wenan-zl/?type=json")
-    const data = await res.json()
-    if (data) {
-        userInfo.HomeMotivationalWords = data.msg
-        notification.success({
-            message: '随机激励语',
-            description: data.msg
-        })
+    const url = import.meta.env.VITE_SERVER_URL + "/get_sentiment"
+    const response = await fetch(url)
+    if (response.status === 200) {
+        const data = await response.json()
+        console.log(data);
+        if (data.code === 200) {
+            userInfo.HomeMotivationalWords = data.sentiment
+            notification.success({
+                message: '随机激励语',
+                description: data.msg
+            })
+        }
+
+    } else {
+        sunfeiMessage('error', "随机激励语获取失败");
     }
+
+
+
 }
 
 const epithet = ref<string>('')
