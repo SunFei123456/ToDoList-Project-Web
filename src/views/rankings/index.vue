@@ -19,6 +19,12 @@
                                 <span class="username">{{ item.UserName }}</span>
                                 <span class="Signatures">
                                     {{ item.introduction }} </span>
+                                <!-- 蕈状 -->
+
+                                <a-tag color="#0754ed" class="medals" v-if="item.medals === '项目开发者'">{{ item.medals
+                                    }}</a-tag>
+
+                                <a-tag color="blue" class="medals" v-else>{{ item.medals }}</a-tag>
                             </div>
                         </div>
                         <div class="right">
@@ -45,6 +51,12 @@
                                 <span class="username">{{ item.nickName }}</span>
                                 <span class="Signatures">
                                     {{ item.Signatures }} </span>
+
+
+                                <a-tag color="#0754ed" class="medals" v-if="item.medals === '项目开发者'">{{ item.medals
+                                    }}</a-tag>
+
+                                <a-tag color="blue" class="medals" v-else>{{ item.medals }}</a-tag>
                             </div>
                         </div>
                         <div class="right">
@@ -70,6 +82,11 @@
                                 <span class="username">{{ item.nickName }}</span>
                                 <span class="Signatures">
                                     {{ item.Signatures }} </span>
+
+                                <a-tag color="#0754ed" class="medals" v-if="item.medals === '项目开发者'">{{ item.medals
+                                    }}</a-tag>
+
+                                <a-tag color="blue" class="medals" v-else>{{ item.medals }}</a-tag>
                             </div>
                         </div>
                         <div class="right">
@@ -95,6 +112,12 @@
                                 <span class="username">{{ item.username }}</span>
                                 <span class="Signatures">
                                     {{ item.introduce }} </span>
+
+                                <a-tag color="#0754ed" class="medals" v-if="item.medals === '项目开发者'">{{ item.medals
+                                    }}</a-tag>
+
+                                <a-tag color="blue" class="medals" v-else>{{ item.medals }}</a-tag>
+
                             </div>
                         </div>
                         <div class="right">
@@ -129,6 +152,8 @@ const getData = async () => {
     const res: any = await getRankings()
     if (res.code == 200) {
         RankingsData.value = res.data
+        console.log(RankingsData.value);
+
     } else {
         sunfeiMessage("error", "数据请求异常,请联系负责人")
     }
@@ -210,7 +235,8 @@ onMounted(() => {
             }
 
             .middle {
-                width: 30%;
+                position: relative;
+                width: 50%;
                 display: flex;
                 gap: 0.25rem;
 
@@ -251,6 +277,15 @@ onMounted(() => {
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
+
+                .medals {
+                    // 文本溢出隐藏
+                    width: 75px !important;
+                    border: none;
+                    position: absolute;
+                    right: 0px;
+                    bottom: 0px;
+                }
             }
         }
     }
@@ -273,6 +308,11 @@ onMounted(() => {
 
         overflow: scroll;
         overflow-x: hidden;
+    }
+
+    .medals {
+        position: static !important;
+        padding: 0px;
     }
 
 
