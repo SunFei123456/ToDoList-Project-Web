@@ -18,3 +18,15 @@ export function getLevelUpPrize(user_id: string | null) {
     method: "put",
   });
 }
+
+
+
+// 每月免费福利 奖励
+// http://127.0.0.1:8080/reward/smallRewards/1
+
+export function getMonthFreeRewards(user_id: string | null) {
+  return request({
+    url: `/reward/smallRewards/${user_id}`,
+    method: "put",
+  });
+}
