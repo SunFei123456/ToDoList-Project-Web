@@ -15,6 +15,7 @@ interface UserState {
   phone: string | null;// 手机号
   age: number | null; // 年龄
   HomeMotivationalWords: string | null // 自定义首页激励语
+  medals : string | null// 成就勋章
 }
 
 export const useUserStore = defineStore(
@@ -32,7 +33,8 @@ export const useUserStore = defineStore(
       introduction: "", // 个人语录
       phone:"", // 手机号
       age:0, // 年龄
-      HomeMotivationalWords:"" // 自定义首页激励语
+      HomeMotivationalWords:"", // 自定义首页激励语
+      medals:""// 成就勋章
     }),
     actions: {
       //  获取用户相关的数据 的接口
@@ -54,6 +56,7 @@ export const useUserStore = defineStore(
           this.phone = res.data.phone;
           this.age = res.data.age;
           this.HomeMotivationalWords = res.data.HomeMotivationalWords
+          this.medals = res.data.medals
         }
       },
     },
