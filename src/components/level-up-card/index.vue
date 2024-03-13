@@ -63,11 +63,8 @@ const getPrize = async () => {
 const tasksTotalNum = ref()
 // 获取任务总量
 const gettodoListNum = async () => {
-
     try {
         const res: any = await getTaskNum(getCurrentUserid())
-
-        
         if (res.code == 200) {
             tasksTotalNum.value = res.nums
         } else {
