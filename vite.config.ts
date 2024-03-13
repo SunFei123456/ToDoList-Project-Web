@@ -17,6 +17,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@surely-vue/table", "vue"],
   },
+
   css: {
     preprocessorOptions: {
       sass: {
