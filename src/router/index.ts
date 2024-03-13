@@ -90,6 +90,14 @@ const router = createRouter({
           },
           component: () => import("@/views/prize_activity/index.vue"),
         },
+        {
+          path: "/shop",
+          name: "shop",
+          meta: {
+            title: "商店",
+          },
+          component: () => import("@/views/shop/index.vue"),
+        },
       ],
     },
   ],
@@ -106,13 +114,14 @@ const router = createRouter({
 // 用来在路由切换前和切换后执行一些逻辑，例如权限验证、页面加载状态控制、页面切换动画等。
 router.beforeEach((to, from, next) => {
   console.log(from, to, "路由守卫");
-  
+
   // 修改浏览器窗口的标题
   document.title = to.meta.title as string;
   // 在路由切换前开始进度条
   NProgress.start();
   // 用户未登录 只可以 访问登录和注册的页面 其他页面会被重定向登录页面
-  if (to.name !== "login" && to.name !== "register" && !getCurrentUserid()) next({ name: "login" });
+  if (to.name !== "login" && to.name !== "register" && !getCurrentUserid())
+    next({ name: "login" });
   else next();
 });
 
